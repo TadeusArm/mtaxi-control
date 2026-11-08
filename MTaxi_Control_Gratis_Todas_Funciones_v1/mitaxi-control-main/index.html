@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#171713">
+  <meta name="description" content="Controla la caja de cada turno: total hoja, tarjeta, apps, efectivo, gasolina, gastos y prorrateos.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MiTaxi">
+  <meta name="application-name" content="MiTaxi">
+  <meta name="format-detection" content="telephone=no">
+  <title>MiTaxi Control</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section id="authGate" class="auth-gate" aria-labelledby="authTitle">
+    <div class="auth-card">
+      <div class="auth-mark"><span></span><span></span><span></span><span></span></div>
+      <p class="kicker">MITAXI CONTROL</p><h1 id="authTitle">Tu cuenta, tus jornadas</h1>
+      <p class="auth-intro">Inicia sesión o crea una cuenta para guardar tus registros de forma privada.</p>
+      <div class="auth-tabs"><button type="button" class="active" data-auth-mode="login">Iniciar sesión</button><button type="button" data-auth-mode="register">Crear cuenta</button></div>
+      <form id="authForm">
+        <label class="auth-label">Correo electrónico<input id="authEmail" type="email" autocomplete="email" required maxlength="254" placeholder="tu@correo.com"></label>
+        <label class="auth-label">Contraseña<input id="authPassword" type="password" autocomplete="current-password" required minlength="10" maxlength="200" placeholder="Mínimo 10 caracteres"></label>
+        <p id="authError" class="form-error" role="alert"></p>
+        <button id="authSubmit" class="save auth-submit" type="submit">Iniciar sesión</button>
+      </form>
+      <p class="auth-foot">La contraseña se guarda protegida mediante hash; nunca se almacena en texto plano.</p>
+    </div>
+  </section>
+  <div class="app-shell" id="appShell" hidden>
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div><p class="eyebrow">TU TURNO, TUS CUENTAS</p><h1>MiTaxi <em>Control</em></h1></div>
+      <button class="expenses-button" id="settingsBtn" aria-label="Abrir gastos y jornadas">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5.5A2.5 2.5 0 0 1 3 16.5Z"/><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h11"/><path d="M16.5 12.5h1.5"/></svg>
+        <span>Gastos</span>
+      </button>
+    </header>
+
+    <main>
+      <nav class="mode-switch" aria-label="Tipo de conductor">
+        <button class="active" data-mode="owner">Autónomo <span>/ Propietario</span></button>
+        <button data-mode="salary">Asalariado</button>
+      </nav>
+
+      <section class="entry-card">
+        <div class="card-heading"><div><p class="kicker" id="formKicker">NUEVO REGISTRO</p><h2 id="formTitle">Caja del día</h2></div><label class="date-field">Fecha<input id="date" type="date"></label></div>
+        <form id="recordForm" novalidate>
+          <input type="hidden" id="editingId">
+          <div class="income-grid">
+            <label class="wide"><span><i class="cash-dot"></i>Total hoja</span><div class="money"><input id="totalSheet" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€</b></div></label>
+            <label><span><i class="card-dot"></i>Visa/Tarjeta</span><div class="money"><input id="card" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€</b></div></label>
+            <label><span><i class="app-dot"></i>Aplicaciones</span><div class="money"><input id="apps" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€</b></div></label>
+          </div>
+          <div class="prorate-note" id="cashNote"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Efectivo calculado</span><strong id="cashDisplay">0,00 €</strong></div>
+
+          <label class="fuel-field" id="fuelField"><span><i class="fuel-dot"></i>Gasolina</span><div class="money"><input id="fuel" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€</b></div></label>
+          <p class="field-hint" id="fuelSalaryNote" hidden>La pagas con la recaudación, pero es un gasto del propietario: se resta de lo que entregas al jefe y <strong>no</strong> de tu parte.</p>
+
+          <div id="ownerFields">
+            <div class="section-rule"><span>MÁS GASTOS DEL DÍA</span></div>
+            <div class="income-grid expense-grid">
+              <label class="wide"><span>Otros gastos variables</span><div class="money"><input id="other" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€</b></div></label>
+            </div>
+            <div class="prorate-note"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span id="dailyFixedLabel">Gastos fijos por jornada</span><strong id="dailyFixed">0,00 €</strong></div>
+          </div>
+
+          <div id="salaryFields" hidden>
+            <div class="section-rule"><span>ACUERDO CON EL PROPIETARIO</span></div>
+            <label class="percent-label"><span>Tu porcentaje</span><div class="money"><input id="percentage" inputmode="decimal" autocomplete="off" value="40"><b>%</b></div></label>
+          </div>
+
+          <div class="live-summary">
+            <div><span>Total hoja</span><strong id="revenuePreview">0,00 €</strong></div>
+            <div id="deductionRow"><span>Gastos + prorrateo</span><strong id="expensePreview">− 0,00 €</strong></div>
+            <div id="fuelRow" hidden><span>Gasolina (gasto del propietario)</span><strong id="fuelPreview">− 0,00 €</strong></div>
+            <div class="result"><span id="resultLabel">Beneficio neto real</span><strong id="netPreview">0,00 €</strong></div>
+            <div class="delivery" id="deliveryRow" hidden><span>A entregar al jefe</span><strong id="deliveryPreview">0,00 €</strong></div>
+            <div class="delivery" id="balanceRow" hidden><span id="balanceLabel">Entregar al jefe en efectivo</span><strong id="balancePreview">0,00 €</strong></div>
+          </div>
+          <p class="form-error" id="formError" role="alert"></p>
+          <div class="form-actions"><button type="button" class="cancel" id="cancelEdit" hidden>Cancelar</button><button type="submit" class="save"><span id="saveText">Guardar jornada</span><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg></button></div>
+        </form>
+      </section>
+
+      <section class="history-section" id="history">
+        <div class="section-title"><div><p class="kicker">TUS NÚMEROS</p><h2>Historial</h2></div><span class="sync-status" id="syncStatus">Guardado local</span></div>
+        <div class="period-tabs" role="tablist"><button class="active" data-period="day">Día</button><button data-period="week">Semana</button><button data-period="month">Mes</button><button data-period="year">Año</button></div>
+        <div class="period-nav"><button id="prevPeriod" aria-label="Periodo anterior">‹</button><strong id="periodLabel"></strong><button id="nextPeriod" aria-label="Periodo siguiente">›</button></div>
+        <div class="totals-strip"><div><span>Ingresos</span><strong id="totalRevenue">0,00 €</strong></div><div><span id="totalSecondaryLabel">Gastos</span><strong id="totalExpenses">0,00 €</strong></div><div class="green"><span id="totalNetLabel">Neto</span><strong id="totalNet">0,00 €</strong></div></div>
+        <div class="totals-strip breakdown-strip"><div><span>Visa/Tarjeta</span><strong id="totalCard">0,00 €</strong></div><div><span>Apps</span><strong id="totalApps">0,00 €</strong></div><div><span>Efectivo</span><strong id="totalCash">0,00 €</strong></div></div>
+        <div class="totals-strip breakdown-strip" id="detailStrip" hidden></div>
+        <section class="analytics-panel" id="analyticsPanel" aria-labelledby="analyticsTitle">
+          <div class="analytics-head"><div><p class="kicker">INCLUIDO GRATIS</p><h3 id="analyticsTitle">Gráficos y análisis</h3><p class="analytics-subtitle">Compara ingresos, gastos y beneficio.</p></div><span class="free-tag">GRATIS</span></div>
+          
+          <div id="analyticsContent"><div class="analytics-controls"><button type="button" class="active" data-chart-scope="month">Mensual</button><button type="button" data-chart-scope="year">Anual</button><label><span id="chartPeriodLabel">Mes</span><select id="chartPeriod"></select></label></div><div class="chart-legend"><span><i class="legend-income"></i>Ingresos</span><span><i class="legend-expense"></i>Gastos</span><span><i class="legend-net"></i>Beneficio neto</span></div><div id="analyticsChart" class="analytics-chart" role="img" aria-label="Gráfico de ingresos y beneficio neto"></div><div id="analyticsInsights" class="analytics-insights"></div></div>
+        </section>
+        <button type="button" class="pdf-button" id="pdfBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M9 14h6M9 17h4"/></svg>
+          <span>Generar PDF</span>
+        </button>
+        <div id="recordList" class="record-list"></div>
+      </section>
+    </main>
+
+    <footer><span>MiTaxi Control</span><small>Las cuentas claras, turno a turno.</small></footer>
+  </div>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" class="settings-card">
+      <div class="dialog-head"><div><p class="kicker">GASTOS</p><h2>Gastos y jornadas</h2></div><button type="submit" value="cancel" class="dialog-close" aria-label="Cerrar">×</button></div>
+      <p>Los gastos fijos del mes se reparten <strong>solo entre tus jornadas reales de trabajo</strong> de ese mes, no entre todos los días del calendario.</p>
+
+      <div class="section-rule"><span>GASTOS MENSUALES</span></div>
+      <label><span>Cuota de autónomos</span><div class="money"><input id="selfEmployed" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€ / mes</b></div></label>
+      <label><span>Gestoría</span><div class="money"><input id="agency" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€ / mes</b></div></label>
+      <label><span>Préstamo/financiación</span><div class="money"><input id="vehicleLoan" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€ / mes</b></div></label>
+      <label><span>Parking/Garaje</span><div class="money"><input id="parking" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€ / mes</b></div></label>
+      <label><span>Mantenimiento</span><div class="money"><input id="maintenance" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€ / mes</b></div></label>
+      <label><span>Otros mensuales</span><div class="money"><input id="monthlyOther" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€ / mes</b></div></label>
+
+      <div class="section-rule"><span>GASTOS ANUALES</span></div>
+      <label><span>Seguro</span><div class="money"><input id="insurance" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€ / año</b></div></label>
+      <label><span>Otros anuales</span><div class="money"><input id="annualOther" inputmode="decimal" autocomplete="off" placeholder="0,00"><b>€ / año</b></div></label>
+
+      <div class="section-rule"><span>OTROS GASTOS</span></div>
+      <p class="field-hint">Crea los gastos que quieras con su nombre e importe. Puedes editarlos o eliminarlos cuando quieras.</p>
+      <div id="customList" class="custom-list"></div>
+      <button type="button" class="add-expense" id="addCustom">+ Añadir otro gasto</button>
+
+      <div class="section-rule"><span>CALENDARIO DE JORNADAS</span></div>
+      <p class="field-hint">Marca los días entre semana que trabajas y tu turno de fin de semana. Cada jornada cuenta en el mes al que pertenece su fecha: si el fin de semana de una semana partida cae ya en el mes siguiente, se cuenta en el mes siguiente.</p>
+      <div class="weekday-picker" id="weekdayPicker">
+        <label><input type="checkbox" value="1"><span>L</span></label>
+        <label><input type="checkbox" value="2"><span>M</span></label>
+        <label><input type="checkbox" value="3"><span>X</span></label>
+        <label><input type="checkbox" value="4"><span>J</span></label>
+        <label><input type="checkbox" value="5"><span>V</span></label>
+      </div>
+      <label class="select-label"><span>Jornada de fin de semana</span>
+        <select id="weekendMode">
+          <option value="alt">Alterna: un sábado, el siguiente domingo</option>
+          <option value="sat">Todos los sábados</option>
+          <option value="sun">Todos los domingos</option>
+          <option value="satsun">Sábado y domingo</option>
+          <option value="none">Sin jornada de fin de semana</option>
+        </select>
+      </label>
+      <label class="select-label" id="anchorLabel"><span>Referencia: un fin de semana que sí trabajas</span><input id="weekendAnchor" type="date"></label>
+
+      <div class="prorate-note"><svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/></svg><span>Jornadas de <b id="shiftMonthLabel">este mes</b></span><strong id="shiftCount">0</strong></div>
+      <div class="prorate-note"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Gastos fijos por jornada</span><strong id="shiftShare">0,00 €</strong></div>
+      <p class="field-hint" id="shiftWarning" hidden>No has marcado ninguna jornada: mientras no lo hagas, los gastos fijos se reparten entre los días del mes.</p>
+
+      <button type="submit" value="default" class="save settings-save" id="saveSettings">Guardar configuración</button>
+    </form>
+  </dialog>
+
+  <dialog id="pdfDialog">
+    <form method="dialog" class="settings-card">
+      <div class="dialog-head"><div><p class="kicker">INFORMES</p><h2>Generar PDF</h2></div><button type="submit" value="cancel" class="dialog-close" aria-label="Cerrar">×</button></div>
+      <p>Elige un mes concreto o un año completo. Se abrirá el informe para imprimirlo o guardarlo como PDF desde el navegador.</p>
+      <div class="period-tabs" id="pdfScopeTabs"><button type="button" class="active" data-scope="month">Mes</button><button type="button" data-scope="year">Año</button></div>
+      <label class="select-label"><span id="pdfPeriodLabel">Mes</span><select id="pdfPeriod"></select></label>
+      <label class="select-label"><span>Tipo de conductor</span>
+        <select id="pdfMode">
+          <option value="owner">Autónomo / Propietario</option>
+          <option value="salary">Asalariado</option>
+        </select>
+      </label>
+      <p class="form-error" id="pdfError" role="alert"></p>
+      <div class="form-actions">
+        <button type="button" class="cancel" id="pdfShare" hidden>Compartir</button>
+        <button type="button" class="save" id="pdfDownload"><span id="pdfDownloadText">Guardar PDF</span><svg viewBox="0 0 24 24"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg></button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="calc.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="auth.js" defer></script>
+  <script>
+    // Registro del Service Worker: sólo habilita la instalación y el arranque
+    // sin conexión. No interviene en los datos ni en la sincronización.
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

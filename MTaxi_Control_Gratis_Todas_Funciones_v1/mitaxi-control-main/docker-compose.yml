@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mitaxi
+      POSTGRES_USER: mitaxi
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Crea .env y define POSTGRES_PASSWORD}
+    volumes:
+      - mitaxi_pgdata:/var/lib/postgresql/data
+      - ./postgresql_independiente/01_crear_esquema.sql:/docker-entrypoint-initdb.d/01_crear_esquema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mitaxi -d mitaxi"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [internal]
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      PORT: 3000
+      HOST: 0.0.0.0
+      PGHOST: db
+      PGPORT: 5432
+      PGUSER: mitaxi
+      PGPASSWORD: ${POSTGRES_PASSWORD:?Crea .env y define POSTGRES_PASSWORD}
+      PGDATABASE: mitaxi
+      PGSSLMODE: disable
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [internal]
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?Define DOMAIN en .env, por ejemplo mtaxicontrol.es}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+    networks: [internal]
+volumes:
+  mitaxi_pgdata:
+  caddy_data:
+  caddy_config:
+networks:
+  internal:
+    driver: bridge

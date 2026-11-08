@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#171713">
+  <meta name="description" content="Cómo solicitar la eliminación de los datos de MiTaxi Control: a qué correo escribir, qué datos se borran del servidor y cómo eliminar los guardados en el dispositivo.">
+  <meta name="format-detection" content="telephone=no">
+  <title>Solicitar la eliminación de datos · MiTaxi Control</title>
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    /* Estilos propios de esta página legal. Son los mismos que usa la
+       política de privacidad, para que ambas páginas se vean iguales.
+       No afectan al resto de la aplicación. */
+    .legal-card{margin-top:16px}
+    .legal-card>p:first-of-type{margin-top:14px}
+    .legal h3{font:800 20px/1.1 var(--display);text-transform:uppercase;letter-spacing:.02em;margin:26px 0 0;color:var(--cream)}
+    .legal h3 b{color:var(--yellow);font-weight:800;margin-right:7px}
+    .legal p,.legal li{font-size:13px;line-height:1.65;color:#cfcdc3}
+    .legal p{margin:9px 0 0}
+    .legal ul{margin:9px 0 0;padding-left:18px;display:grid;gap:6px}
+    .legal li::marker{color:var(--yellow)}
+    .legal strong{color:var(--cream)}
+    .legal a{color:var(--yellow);text-decoration:none;border-bottom:1px solid #6c6a5a;word-break:break-word}
+    .legal-updated{margin-top:12px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+    .legal-highlight{margin-top:18px;padding:14px;border:1px dashed #535144;border-radius:13px;background:#121210}
+    .legal-highlight p{margin:0;font-size:12px;color:var(--muted)}
+    .legal-highlight ul{margin-top:8px}
+    .legal-highlight li{font-size:12px}
+    .back-link{display:flex;align-items:center;gap:8px;min-height:50px;margin-top:16px;padding:0 16px;border:1px solid var(--line);border-radius:13px;background:var(--panel);color:var(--cream);font:800 12px var(--body);text-transform:uppercase;letter-spacing:.06em;text-decoration:none;justify-content:center}
+    .back-link svg{width:18px;fill:none;stroke:var(--yellow);stroke-width:1.9}
+    .legal-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+    .legal-nav a{display:flex;align-items:center;justify-content:center;min-height:54px;padding:12px 14px;border:1px solid var(--line);border-radius:13px;background:var(--panel);color:var(--cream);font:800 12px/1.35 var(--body);text-align:center;text-decoration:none;overflow-wrap:anywhere}
+    .legal-nav a[aria-current="page"]{border-color:var(--yellow);color:var(--yellow)}
+    .legal-nav a:focus-visible,.back-link:focus-visible,.mail-button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+    .legal{width:min(100% - 24px,900px);margin-inline:auto;min-width:0}
+    .legal-card{padding:clamp(14px,3vw,28px);min-width:0;overflow-wrap:anywhere}
+    .legal p,.legal li{overflow-wrap:anywhere}
+    @media(max-width:560px){.legal-nav{grid-template-columns:1fr}.legal h3{font-size:18px}.legal p,.legal li{font-size:13px}.legal-highlight{padding:12px}.back-link{width:100%}}
+    @media(min-width:561px){.legal-nav a{justify-content:flex-start;text-align:left}}
+    /* Bloque de contacto y ayuda con el identificador del dispositivo. */
+    .mail-button{display:flex;align-items:center;justify-content:center;gap:9px;min-height:52px;margin-top:16px;border-radius:13px;background:var(--yellow);color:var(--ink);font:800 13px var(--body);text-decoration:none;border:0}
+    .mail-button svg{width:19px;fill:none;stroke:currentColor;stroke-width:1.9}
+    .id-box{margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+    .id-box span{display:block;color:#cfcdc3;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+    .id-box code{display:block;margin-top:6px;padding:9px;border-radius:9px;background:#17170f;color:var(--cream);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;word-break:break-all}
+    .id-box p{margin-top:8px;font-size:11px;color:var(--muted)}
+    .id-copy{margin-top:9px;width:100%;min-height:44px;border:1px dashed #6c6a5a;border-radius:11px;background:transparent;color:var(--yellow);font:800 12px var(--body);letter-spacing:.04em}
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div><p class="eyebrow">TU TURNO, TUS CUENTAS</p><h1>MiTaxi <em>Control</em></h1></div>
+    </header>
+
+    <main class="legal">
+      <nav class="legal-nav" aria-label="Documentos legales"><a href="/privacidad.html">Política de privacidad</a><a href="/eliminar-datos.html" aria-current="page">Eliminar cuenta y datos</a></nav>
+      <section class="entry-card legal-card">
+        <div class="card-heading"><div><p class="kicker">ELIMINACIÓN DE DATOS</p><h2>Solicitar la eliminación de datos</h2></div></div>
+        <p class="legal-updated">Última actualización: 21 de septiembre de 2026</p>
+
+        <p>Esta página explica cómo pedir que se eliminen los datos de la aplicación <strong>MiTaxi Control</strong>: a qué dirección hay que escribir, qué información se borra del servidor, cómo borrar la que está guardada en tu propio dispositivo y en cuánto tiempo se completa el proceso. Todo lo que aquí se describe es coherente con la <a href="/privacidad.html">Política de privacidad</a>.</p>
+
+        <div class="legal-highlight">
+          <p><strong>Lo esencial</strong></p>
+          <ul>
+            <li>Nombre de la aplicación: <strong>MiTaxi Control</strong>.</li>
+            <li>Correo para solicitar la eliminación: <strong><a href="mailto:mitaxicontrol@gmail.com">mitaxicontrol@gmail.com</a></strong>, el mismo que figura en la Política de privacidad.</li>
+            <li>En el correo debes <strong>solicitar expresamente la eliminación de tu cuenta y los datos asociados</strong>.</li>
+            <li>Si tienes una cuenta, solicita expresamente la <strong>eliminación de la cuenta y de los datos asociados</strong>. Es posible que se te pida verificar la titularidad.</li>
+            <li>MTaxi Control no ofrece actualmente suscripciones ni renovaciones de pago.</li>
+          </ul>
+        </div>
+
+        <h3><b>1.</b> Cómo solicitar la eliminación</h3>
+        <p>Escribe a <a href="mailto:mitaxicontrol@gmail.com">mitaxicontrol@gmail.com</a> indicando claramente que <strong>solicitas la eliminación de tu cuenta y de los datos asociados a MiTaxi Control</strong>. Incluye el correo de la cuenta para localizarla. Se podrá solicitar información adicional razonable para verificar que eres su titular; no envíes contraseñas ni datos completos de tarjeta.</p>
+        <ul>
+          <li>En el asunto: <strong>«Solicitud de eliminación de datos – MiTaxi Control»</strong>.</li>
+          <li>En el texto: la frase <strong>«Solicito la eliminación de mi cuenta y de los datos asociados a MiTaxi Control»</strong>.</li>
+          <li>El <strong>correo de la cuenta</strong> con la que te registraste. No incluyas la contraseña ni los datos completos de tu tarjeta.</li>
+        </ul>
+        <a class="mail-button" href="mailto:mitaxicontrol@gmail.com?subject=Solicitud%20de%20eliminaci%C3%B3n%20de%20datos%20%E2%80%93%20MiTaxi%20Control&amp;body=Solicito%20la%20eliminaci%C3%B3n%20de%20los%20datos%20de%20MiTaxi%20Control." id="mailLink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>Escribir el correo de solicitud</a>
+        <p class="field-hint">El botón abre tu aplicación de correo con el asunto y el texto ya preparados. Si prefieres, puedes escribir el correo a mano con esa misma información.</p>
+
+        <h3><b>2.</b> El identificador aleatorio del dispositivo</h3>
+        <p>La cuenta se localiza mediante el correo con el que te registraste y un identificador interno del servidor. No envíes tu contraseña. Si también utilizas una versión anterior que guarda datos anónimos por identificador local, puedes incluir ese identificador como información adicional, pero no sustituye al correo de tu cuenta.</p>
+        <div class="id-box" id="idBox" hidden>
+          <span>Identificador de este dispositivo</span>
+          <code id="clientId"></code>
+          <button type="button" class="id-copy" id="copyId">Copiar identificador</button>
+          <p>Cópialo y pégalo en el correo. Este dato se lee únicamente de este navegador y no se envía a ningún sitio al abrir esta página.</p>
+        </div>
+        <div class="id-box" id="idEmpty">
+          <span>Identificador de este dispositivo</span>
+          <p>No se ha encontrado ningún identificador en este navegador. Aparece sólo si abres esta página en el <strong>mismo navegador o dispositivo</strong> en el que usas MiTaxi Control. Si no consigues obtenerlo, envía igualmente el correo: se te indicará cómo continuar y, en todo caso, borrar los datos de la aplicación en el dispositivo elimina directamente la información guardada en él (punto 4).</p>
+        </div>
+
+        <h3><b>3.</b> Qué datos se incluyen en la solicitud</h3>
+        <p>La solicitud debe identificar la cuenta y pedir que se eliminen, cuando proceda, <strong>la cuenta, las jornadas y la configuración vinculadas a ella</strong>:</p>
+        <ul>
+          <li><strong>Ingresos:</strong> el total de la hoja, los cobros con tarjeta, los cobros por aplicaciones y el efectivo resultante del cálculo.</li>
+          <li><strong>Gastos:</strong> gasolina, otros gastos variables y los gastos fijos o personalizados que hayas configurado, con su periodicidad.</li>
+          <li><strong>Jornadas y configuración de tu actividad:</strong> tipo de conductor (autónomo o asalariado), porcentaje acordado y días de jornada.</li>
+          <li><strong>Fechas e identificadores internos</strong> de cada registro, necesarios para poder editarlo o borrarlo.</li>
+          <li><strong>Datos de cuenta y sesión</strong> asociados al usuario, con invalidación de sesiones activas cuando se procese la eliminación.</li>
+        </ul>
+        <p>La solicitud debe cubrir los datos de cuenta y las jornadas vinculadas a ella. Determinados registros de facturación pueden tener que conservarse durante el plazo legal aplicable. La <a href="/privacidad.html">Política de privacidad</a> explica las categorías de datos. No debe afirmarse que el borrado es inmediato o definitivo hasta que el operador haya ejecutado y verificado el proceso y aplicado sus políticas de copias de seguridad.</p>
+
+        <h3><b>4.</b> Datos guardados en tu dispositivo</h3>
+        <p>MiTaxi Control funciona también sin conexión porque guarda tus cuentas en el <strong>almacenamiento local del dispositivo</strong>. Esa copia local no se elimina a distancia, pero puedes borrarla tú mismo en cualquier momento y el efecto es inmediato:</p>
+        <ul>
+          <li><strong>Borrando los datos de la aplicación</strong> desde los ajustes del sistema o del navegador (opciones del tipo «Borrar datos», «Borrar datos del sitio» o «Almacenamiento»).</li>
+          <li><strong>Desinstalando la aplicación</strong> del dispositivo.</li>
+          <li>También puedes <strong>borrar registros uno a uno</strong> desde la propia aplicación: cada borrado elimina el registro del dispositivo y su copia en el servidor.</li>
+        </ul>
+        <p>Estas opciones eliminan los registros que permanezcan en el almacenamiento local de ese navegador o dispositivo. Si usas otros dispositivos, debes cerrar sesión y eliminar los datos locales también en ellos. La eliminación de la cuenta del servidor debe gestionarse por separado.</p>
+
+        <h3><b>5.</b> Plazos para completar la eliminación</h3>
+        <p>El plazo de eliminación en el servidor depende de la verificación y ejecución por parte del operador, y de las copias de seguridad y obligaciones legales que resulten aplicables. El borrado local en tu dispositivo surte efecto cuando eliminas los datos de la aplicación o la desinstalas.</p>
+        <p>La solicitud se gestionará sin dilaciones indebidas y dentro de los plazos previstos por la normativa aplicable, normalmente un mes para responder a solicitudes de derechos RGPD, sujeto a las condiciones y posibles prórrogas legales. La confirmación debe emitirse después de verificar la ejecución efectiva de la eliminación.</p>
+
+        <h3><b>6.</b> Informes en PDF que ya hayas guardado</h3>
+        <p>Los informes se generan en tu propio dispositivo y nunca se envían al servidor, por lo que no forman parte de lo que se elimina. Si guardaste o compartiste algún PDF, sigue estando donde tú lo dejaste y sólo tú puedes borrarlo.</p>
+
+        <h3><b>7.</b> Contacto</h3>
+        <p>Para cualquier duda sobre la eliminación de datos o sobre el resto de tus derechos (acceso, rectificación, supresión, limitación, oposición y portabilidad) puedes escribir a <a href="mailto:mitaxicontrol@gmail.com">mitaxicontrol@gmail.com</a>. Toda la información sobre el tratamiento está en la <a href="/privacidad.html">Política de privacidad</a>.</p>
+      </section>
+
+      <a class="back-link" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Volver a MiTaxi Control</a>
+    </main>
+
+    <footer><span>MiTaxi Control</span><small>Las cuentas claras, turno a turno.</small></footer>
+  </div>
+
+  <script>
+    // Ayuda de sólo lectura: muestra el identificador aleatorio que la aplicación
+    // ya tiene guardado en este navegador para poder pegarlo en el correo.
+    // No crea, modifica ni envía ningún dato.
+    (function () {
+      var id = null;
+      try { id = localStorage.getItem("mitaxi-control-client-v1"); } catch (e) {}
+      if (!id) return;
+      var box = document.getElementById("idBox");
+      var empty = document.getElementById("idEmpty");
+      document.getElementById("clientId").textContent = id;
+      box.hidden = false;
+      empty.hidden = true;
+
+      var mail = document.getElementById("mailLink");
+      mail.href = "mailto:mitaxicontrol@gmail.com"
+        + "?subject=" + encodeURIComponent("Solicitud de eliminación de cuenta y datos – MiTaxi Control")
+        + "&body=" + encodeURIComponent(
+            "Solicito la eliminación de mi cuenta y de los datos asociados a MiTaxi Control.\nCorreo de la cuenta: [escribe aquí el correo con el que te registraste].\n\n"
+            + "Identificador del dispositivo: " + id + "\n"
+          );
+
+      var button = document.getElementById("copyId");
+      button.addEventListener("click", function () {
+        var done = function () { button.textContent = "Identificador copiado"; };
+        try {
+          navigator.clipboard.writeText(id).then(done, function () { button.textContent = "Cópialo manualmente"; });
+        } catch (e) { button.textContent = "Cópialo manualmente"; }
+      });
+    })();
+  </script>
+</body>
+</html>
